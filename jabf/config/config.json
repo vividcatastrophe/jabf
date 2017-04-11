@@ -1,0 +1,22 @@
+{
+    "search strategy": {
+        "name": "variatepredefinedchars",
+        "params": {
+          "dictionary": "",
+          "password": "",
+          "mask": ""
+        }
+    },
+    "target module": {
+        "name": "luks",
+        "params": {
+          "container_path": "/home/user/PycharmProjects/algorithms/container"
+        }
+    },
+    "output method": {
+        "name": "",
+        "params": {
+
+        }
+    }
+}

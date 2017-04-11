@@ -4,7 +4,7 @@ from jabf.config import config_read
 
 
 def main():
-    config = config_read('config/config.json')
+    config = config_read()
 
 
 if __name__ == '__main__':

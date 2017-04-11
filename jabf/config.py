@@ -1,8 +1,16 @@
 import json
-import sys, traceback
+import sys
+import os
+import traceback
+
+default_config_path = os.path.join(
+                                os.path.dirname(os.path.realpath(__file__)),
+                                "config/config.json")
+
+config_sections = ["search strategy", "target module", "output method"]
 
 
-def config_read(config_path):
+def config_read(config_path=default_config_path):
     """
     Reads a file with json config
     Params:
@@ -19,11 +27,12 @@ def config_read(config_path):
     return config
 
 
+def get_strategy_config(config):
+    return config["search strategy"]
+
+
 class InvalidConfigError(Exception):
     pass
-
-
-config_sections = ["search strategy", "target module", "output method"]
 
 
 def _config_validate(config):
@@ -40,7 +49,8 @@ def _config_validate(config):
         elif "name" not in config[section]:
             issues.append("Config section '{}' has no 'name'".format(section))
         elif "params" not in config[section]:
-            issues.append("Config section '{}' has no 'params'".format(section))
+            issues.append("Config section '{}' has no 'params'"
+                          .format(section))
 
     if len(issues) > 0:
         raise InvalidConfigError('\n'.join(issues))
