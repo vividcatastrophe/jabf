@@ -4,10 +4,6 @@ from jabf.utils import load_module
 
 SearchStrategyRegister = {}
 
-default_modules_folder = os.path.join(
-                                   os.path.dirname(os.path.realpath(__file__)),
-                                   "search_strategy_modules")
-
 
 class SearchStrategy(object):
     """ Basic search strategy class to inherit from """
@@ -23,9 +19,9 @@ class SearchStrategy(object):
                 'Method get_combination_count is not implemented')
 
 
-def load_strategies(modules_folder=default_modules_folder):
+def load_strategies(modules_folder):
     """ Loads search strategies from modules found in the modules_folder """
-    for file_path in glob.glob(os.path.join(modules_folder, "*.py")):
+    for file_path in glob.glob(os.path.join(modules_folder, '*.py')):
         load_strategy(file_path)
 
 
