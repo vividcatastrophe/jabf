@@ -9,6 +9,20 @@ default_modules_folder = os.path.join(
                                    "search_strategy_modules")
 
 
+class SearchStrategy(object):
+    """ Basic search strategy class to inherit from """
+    name = "searchstrategy"
+    strategy_params = []
+
+    def get_generator(self):
+        raise NotImplementedError(
+                'Method get_generator is not implemented')
+
+    def get_combination_count(self):
+        raise NotImplementedError(
+                'Method get_combination_count is not implemented')
+
+
 def load_strategies(modules_folder=default_modules_folder):
     """ Loads search strategies from modules found in the modules_folder """
     for file_path in glob.glob(os.path.join(modules_folder, "*.py")):
@@ -24,7 +38,7 @@ def load_strategy(module_path):
                         if type(getattr(module, cl))
                         .__name__ == 'type']
     for strategy in strategy_classes:
-        if is_valid_strategy(strategy):
+        if is_valid_strategy(strategy) and strategy != SearchStrategy:
             register_strategy(strategy)
 
 
@@ -36,18 +50,6 @@ def register_strategy(strategy_class):
 def is_valid_strategy(strategy_class):
     """
     Verifies whether the provided strategy_class is a valid search strategy
-    Checks if it contains the obligatory search strategy methods and attributes
     Returns True or False
     """
-    attributes = ["name", "strategy_params"]
-    methods = ["get_combination_count", "get_generator"]
-    is_valid = True
-    for attr in attributes:
-        if not hasattr(strategy_class, attr):
-            is_valid = False
-    for method in methods:
-        if not hasattr(strategy_class, method) or \
-                not type(getattr(strategy_class, method)) \
-                .__name__ == "function":
-            is_valid = False
-    return is_valid
+    return issubclass(strategy_class, SearchStrategy)
