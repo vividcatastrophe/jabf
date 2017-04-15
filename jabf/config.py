@@ -1,16 +1,12 @@
 import json
 import sys
-import os
 import traceback
 
-default_config_path = os.path.join(
-                                os.path.dirname(os.path.realpath(__file__)),
-                                "config/config.json")
 
 config_sections = ["search strategy", "target module", "output method"]
 
 
-def config_read(config_path=default_config_path):
+def config_read(config_path):
     """
     Reads a file with json config
     Params:
