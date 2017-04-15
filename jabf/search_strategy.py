@@ -34,7 +34,7 @@ def load_strategy(module_path):
                         if type(getattr(module, cl))
                         .__name__ == 'type']
     for strategy in strategy_classes:
-        if is_valid_strategy(strategy) and strategy != SearchStrategy:
+        if is_valid_strategy(strategy):
             register_strategy(strategy)
 
 
@@ -48,4 +48,5 @@ def is_valid_strategy(strategy_class):
     Verifies whether the provided strategy_class is a valid search strategy
     Returns True or False
     """
-    return issubclass(strategy_class, SearchStrategy)
+    return issubclass(strategy_class, SearchStrategy) and \
+        strategy_class != SearchStrategy
