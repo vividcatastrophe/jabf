@@ -23,10 +23,6 @@ def config_read(config_path):
     return config
 
 
-def get_strategy_config(config):
-    return config["search strategy"]
-
-
 class InvalidConfigError(Exception):
     pass
 
