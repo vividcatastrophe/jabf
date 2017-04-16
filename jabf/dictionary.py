@@ -36,6 +36,9 @@ class DictionaryRegister(object):
 
     def get_dictionary_generator(self, name):
         """ Returns a generator to get data from dictionary """
+        if not name in self.register:
+            raise KeyError('Dictionary {} is not found in register'
+                           .format(name))
         if not os.path.exists(self.register[name]):
             raise FileNotFoundError('Dictionary file is missing: {}'
                                     .format(self.register[name]))
