@@ -41,6 +41,11 @@ def main():
     strategy_register = SearchStrategyRegister()
     strategy_register.load_strategies(args.search_strategies)
 
+    strategy_class = strategy_register[config['search strategy']['name']]
+    strategy = strategy_class(
+        config['search strategy']['params'], dictionary_register)
+    data_gen = strategy.get_generator()
+
 
 if __name__ == '__main__':
     main()
