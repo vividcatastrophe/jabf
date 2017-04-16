@@ -95,6 +95,10 @@ class VariatePredefinedCharsStrategy(SearchStrategy):
             if c not in ('0', '1'):
                 raise ValueError('Invalid characters in strategy mask. '
                                  'The characters allowed: 0 and 1')
+        if not strategy_config['dictionary'] in dictionary_register:
+            raise ValueError('Error in strategy parameters: dictionary {} '
+                             'not found in dictionary register'
+                             .format(strategy_config['dictionary']))
 
     def _get_variations_for_char(self, char):
         variations = set(

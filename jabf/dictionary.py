@@ -14,6 +14,10 @@ class DictionaryRegister(object):
     def __getitem__(self, name):
         return self.register[name]
 
+    def __iter__(self):
+        for dictionary_name in self.register.keys():
+            yield dictionary_name
+
     def register_dictionaries(self, dictionaries_folder):
         """
         Adds dictionaries from dictionary files in dictionaries_folder
@@ -36,7 +40,7 @@ class DictionaryRegister(object):
 
     def get_dictionary_generator(self, name):
         """ Returns a generator to get data from dictionary """
-        if not name in self.register:
+        if name not in self.register:
             raise KeyError('Dictionary {} is not found in register'
                            .format(name))
         if not os.path.exists(self.register[name]):
