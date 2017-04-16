@@ -2,6 +2,7 @@
 
 from jabf.config import config_read
 from jabf.search_strategy import load_strategies
+from jabf.dictionary import DictionaryRegister
 import os
 import argparse
 
@@ -23,11 +24,20 @@ parser.add_argument(
     metavar='STRATEGIES_FOLDER',
     default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
                          'jabf', 'search_strategy_modules'))
+parser.add_argument(
+    '-d',
+    '--dictionaries',
+    help='path to folder containing dictionaries',
+    metavar='DICTIONARIES_FOLDER',
+    default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                         'jabf', 'dictionaries'))
 
 
 def main():
     args = parser.parse_args()
     config = config_read(args.config)
+    dictionary_register = DictionaryRegister()
+    dictionary_register.register_dictionaries(args.dictionaries)
     load_strategies(args.search_strategies)
 
 
