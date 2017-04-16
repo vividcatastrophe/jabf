@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from jabf.config import config_read
-from jabf.search_strategy import load_strategies
+from jabf.search_strategy import SearchStrategyRegister
 from jabf.dictionary import DictionaryRegister
 import os
 import argparse
@@ -38,7 +38,8 @@ def main():
     config = config_read(args.config)
     dictionary_register = DictionaryRegister()
     dictionary_register.register_dictionaries(args.dictionaries)
-    load_strategies(args.search_strategies)
+    strategy_register = SearchStrategyRegister()
+    strategy_register.load_strategies(args.search_strategies)
 
 
 if __name__ == '__main__':
