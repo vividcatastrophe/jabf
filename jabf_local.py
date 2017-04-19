@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
 from jabf.config import config_read
-from jabf.search_strategy import SearchStrategyRegister
+from jabf.search_strategy import SearchStrategy
 from jabf.dictionary import DictionaryRegister
+from jabf.class_register import ClassRegister
 import os
 import argparse
 
@@ -38,8 +39,8 @@ def main():
     config = config_read(args.config)
     dictionary_register = DictionaryRegister()
     dictionary_register.register_dictionaries(args.dictionaries)
-    strategy_register = SearchStrategyRegister()
-    strategy_register.load_strategies(args.search_strategies)
+    strategy_register = ClassRegister(SearchStrategy)
+    strategy_register.load_classes_from_folder(args.search_strategies)
 
     strategy_class = strategy_register[config['search strategy']['name']]
     strategy = strategy_class(
