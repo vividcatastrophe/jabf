@@ -85,6 +85,7 @@ class VariatePredefinedCharsStrategy(SearchStrategy):
                             right_part[1:]))
 
     def _validate_strategy_config(self, strategy_config, dictionary_register):
+        self._validate_strategy_config_params(strategy_config)
         if len(strategy_config['data']) == 0:
             raise ValueError('Error in strategy parameters: "data" field '
                              'is empty')
