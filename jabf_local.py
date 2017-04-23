@@ -43,8 +43,10 @@ def main():
     strategy_register.load_classes_from_folder(args.search_strategies)
 
     strategy_class = strategy_register[config['search strategy']['name']]
+    dictionary = dictionary_register[config['dictionary']]
+
     strategy = strategy_class(
-        config['search strategy']['params'], dictionary_register)
+        config['search strategy']['params'], dictionary)
     data_gen = strategy.get_generator()
 
 

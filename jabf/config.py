@@ -3,7 +3,7 @@ import sys
 import traceback
 
 
-config_sections = ["search strategy", "target module", "output method"]
+config_sections = ['search strategy', 'target module', 'output method']
 
 
 def config_read(config_path):
@@ -35,6 +35,8 @@ def _config_validate(config):
         config - dictionary with configuration
     """
     issues = []
+    if 'dictionary' not in config:
+        issues.append("Config doesn't contain 'dictionary' section")
     for section in config_sections:
         if section not in config.keys():
             issues.append("Config doesn't contain {} section".format(section))

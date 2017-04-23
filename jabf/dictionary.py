@@ -2,8 +2,24 @@ import glob
 import os
 
 
+class Dictionary(object):
+    """ Represents a dicitonary and gives access to its data """
+    def __init__(self, name, path):
+        self.name = name
+        self.path = path
+
+    def get_dictionary_generator(self):
+        """ Returns a generator to get data from dictionary """
+        if not os.path.exists(self.path):
+            raise FileNotFoundError('Dictionary file is missing: {}'
+                                    .format(self.path))
+        with open(self.path, 'r') as dictionary:
+            for line in dictionary:
+                yield line.strip('\r\n').strip('\n')
+
+
 class DictionaryRegister(object):
-    """ Register for available dictionaries """
+    """ Register for dictionary objects """
 
     def __init__(self):
         self.register = {}
@@ -36,16 +52,5 @@ class DictionaryRegister(object):
                                   .format(dictionary_path))
         dictionary_name = dictionary_path.split(os.path.sep)[-1]
         if dictionary_name not in self.register:
-            self.register[dictionary_name] = dictionary_path
-
-    def get_dictionary_generator(self, name):
-        """ Returns a generator to get data from dictionary """
-        if name not in self.register:
-            raise KeyError('Dictionary {} is not found in register'
-                           .format(name))
-        if not os.path.exists(self.register[name]):
-            raise FileNotFoundError('Dictionary file is missing: {}'
-                                    .format(self.register[name]))
-        with open(self.register[name], 'r') as dictionary:
-            for line in dictionary:
-                yield line.strip('\r\n').strip('\n')
+            self.register[dictionary_name] = Dictionary(dictionary_name,
+                                                        dictionary_path)

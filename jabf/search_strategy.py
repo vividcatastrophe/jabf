@@ -3,7 +3,7 @@ class SearchStrategy(object):
     name = "searchstrategy"
     strategy_params = []
 
-    def __init__(self, strategy_config, dictionary_register):
+    def __init__(self, strategy_config, dictionary):
         raise NotImplementedError(
                 'Method __init__ is not implemented')
 

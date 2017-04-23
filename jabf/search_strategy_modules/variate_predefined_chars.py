@@ -31,18 +31,16 @@ class VariatePredefinedCharsStrategy(SearchStrategy):
 
     name = "variatepredefinedchars"
     strategy_params = [
-        "dictionary",
         "data",
         "mask",
     ]
 
-    def __init__(self, strategy_config, dictionary_register):
-        self._validate_strategy_config(strategy_config, dictionary_register)
+    def __init__(self, strategy_config, dictionary):
+        self._validate_strategy_config(strategy_config)
         self.data = strategy_config['data']
         self.mask = strategy_config['mask']
         self.dictionary_cache = \
-            list(dictionary_register
-                 .get_dictionary_generator(strategy_config['dictionary']))
+            list(dictionary.get_dictionary_generator())
 
     def get_combination_count(self):
         if len(self.data) == 0:
@@ -84,7 +82,7 @@ class VariatePredefinedCharsStrategy(SearchStrategy):
                             ''.join([left_part, char]),
                             right_part[1:]))
 
-    def _validate_strategy_config(self, strategy_config, dictionary_register):
+    def _validate_strategy_config(self, strategy_config):
         self._validate_strategy_config_params(strategy_config)
         if len(strategy_config['data']) == 0:
             raise ValueError('Error in strategy parameters: "data" field '
@@ -96,10 +94,6 @@ class VariatePredefinedCharsStrategy(SearchStrategy):
             if c not in ('0', '1'):
                 raise ValueError('Invalid characters in strategy mask. '
                                  'The characters allowed: 0 and 1')
-        if not strategy_config['dictionary'] in dictionary_register:
-            raise ValueError('Error in strategy parameters: dictionary {} '
-                             'not found in dictionary register'
-                             .format(strategy_config['dictionary']))
 
     def _get_variations_for_char(self, char):
         variations = set(
