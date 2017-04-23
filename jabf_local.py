@@ -2,6 +2,7 @@
 
 from jabf.config import config_read
 from jabf.search_strategy import SearchStrategy
+from jabf.target import Target
 from jabf.dictionary import DictionaryRegister
 from jabf.class_register import ClassRegister
 import os
@@ -32,6 +33,13 @@ parser.add_argument(
     metavar='DICTIONARIES_FOLDER',
     default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
                          'jabf', 'dictionaries'))
+parser.add_argument(
+    '-t',
+    '--targets',
+    help='path to folder containing modules with targets',
+    metavar='TARGETS_FOLDER',
+    default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                         'jabf', 'target_modules'))
 
 
 def main():
@@ -48,6 +56,8 @@ def main():
     strategy = strategy_class(
         config['search strategy']['params'], dictionary)
     data_gen = strategy.get_generator()
+    target_register = ClassRegister(Target)
+    target_register.load_classes_from_folder(args.targets)
 
 
 if __name__ == '__main__':
