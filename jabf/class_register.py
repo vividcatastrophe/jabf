@@ -1,5 +1,6 @@
 import glob
 import os
+from inspect import isabstract
 import jabf.utils
 
 
@@ -32,19 +33,25 @@ class ClassRegister(object):
         classes = [getattr(module, cl)
                    for cl in dir(module)
                    if type(getattr(module, cl))
-                   .__name__ == 'type']
+                   .__name__ in ['type', 'ABCMeta']]
         for cl in classes:
             if self._is_valid_class(cl):
                 self.register_class(cl)
 
     def register_class(self, loaded_class):
-        """ Puts the loaded_class into the SearchStrategyRegister """
-        self.register[loaded_class.name] = loaded_class
+        """ Puts the loaded_class into the register """
+        if loaded_class.name not in self.register:
+            self.register[loaded_class.name] = loaded_class
+        else:
+            raise KeyError('Class {} is already registered'
+                           .format(loaded_class.name))
 
     def _is_valid_class(self, loaded_class):
         """
-        Verifies whether the provided strategy_class is a valid search strategy
+        Verifies whether the provided loaded_class is a valid class
+        for register
         Returns True or False
         """
         return issubclass(loaded_class, self.reg_class) and \
-            loaded_class != self.reg_class
+            loaded_class != self.reg_class and \
+            not isabstract(loaded_class)
