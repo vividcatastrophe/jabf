@@ -5,6 +5,7 @@ from jabf.search_strategy import SearchStrategy
 from jabf.target import Target
 from jabf.dictionary import DictionaryRegister
 from jabf.class_register import ClassRegister
+from jabf.output_method import OutputMethod
 import os
 import argparse
 
@@ -41,6 +42,14 @@ parser.add_argument(
     default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
                          'jabf', 'target_modules'))
 
+parser.add_argument(
+    '-o',
+    '--output',
+    help='path to folder containing modules with output methods',
+    metavar='OUTPUT_METHODS_FOLDER',
+    default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                         'jabf', 'output_modules'))
+
 
 def main():
     args = parser.parse_args()
@@ -58,6 +67,12 @@ def main():
     data_gen = strategy.get_generator()
     target_register = ClassRegister(Target)
     target_register.load_classes_from_folder(args.targets)
+
+    output_register = ClassRegister(OutputMethod)
+    output_register.load_classes_from_folder(args.output)
+    output_class = output_register[config['output method']['name']]
+    output = output_class(config['output method']['params'])
+
 
 
 if __name__ == '__main__':
