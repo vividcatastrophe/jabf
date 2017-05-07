@@ -1,11 +1,6 @@
 #!/usr/bin/python3
 
-from jabf.config import config_read
-from jabf.search_strategy import SearchStrategy
-from jabf.target import Target
-from jabf.dictionary import DictionaryRegister
-from jabf.class_register import ClassRegister
-from jabf.output_method import OutputMethod
+from jabf.local_runner import LocalRunnerBuilder
 import os
 import argparse
 
@@ -53,26 +48,14 @@ parser.add_argument(
 
 def main():
     args = parser.parse_args()
-    config = config_read(args.config)
-    dictionary_register = DictionaryRegister()
-    dictionary_register.register_dictionaries(args.dictionaries)
-    strategy_register = ClassRegister(SearchStrategy)
-    strategy_register.load_classes_from_folder(args.search_strategies)
-
-    strategy_class = strategy_register[config['search strategy']['name']]
-    dictionary = dictionary_register[config['dictionary']]
-
-    strategy = strategy_class(
-        config['search strategy']['params'], dictionary)
-    data_gen = strategy.get_generator()
-    target_register = ClassRegister(Target)
-    target_register.load_classes_from_folder(args.targets)
-
-    output_register = ClassRegister(OutputMethod)
-    output_register.load_classes_from_folder(args.output)
-    output_class = output_register[config['output method']['name']]
-    output = output_class(config['output method']['params'])
-
+    builder = LocalRunnerBuilder()
+    builder.register_strategies(args.search_strategies)
+    builder.register_dictionaries(args.dictionaries)
+    builder.register_targets(args.targets)
+    builder.register_outputs(args.output)
+    builder.build(args.config)
+    if not builder.get_runner().run():
+        exit(1)
 
 
 if __name__ == '__main__':

@@ -1,4 +1,3 @@
-from datetime import datetime
 from jabf.config import config_read
 from jabf.search_strategy import SearchStrategy
 from jabf.target import Target
@@ -8,27 +7,38 @@ from jabf.class_register import ClassRegister
 
 
 class LocalRunnerBuilder(object):
-    def __init__(self):
-        self.runner = LocalRunner()
-
     def get_runner(self):
-        if self.runner.is_valid():
+        if hasattr(self, 'runner') and self.runner.is_valid():
             return self.runner
         else:
-            raise Exception()
+            raise Exception('No valid runner can be returned')
 
     def build(self, config_path):
+        for register in [
+                'dictionary_register',
+                'strategy_register',
+                'target_register',
+                'output_register'
+                ]:
+            if not hasattr(self, register):
+                raise Exception('Builder has no {}'.format(register))
+        self.runner = LocalRunner()
         self.config = config_read(config_path)
         self.dictionary = self.dictionary_register[self.config['dictionary']]
-        strategy_class = self.strategy_register[self.config['search strategy']['name']]
+        strategy_class = self.strategy_register[
+            self.config['search strategy']['name']]
         self.runner.strategy = strategy_class(
             self.config['search strategy']['params'], self.dictionary)
 
-        target_class = self.target_register[self.config['target module']['name']]
-        self.runner.target = target_class(self.config['target module']['params'])
+        target_class = self.target_register[
+            self.config['target module']['name']]
+        self.runner.target = target_class(
+            self.config['target module']['params'])
 
-        output_class = self.output_register[self.config['output method']['name']]
-        self.runner.output = output_class(self.config['output method']['params'])
+        output_class = self.output_register[
+            self.config['output method']['name']]
+        self.runner.output = output_class(
+            self.config['output method']['params'])
 
     def register_dictionaries(self, dictionary_path):
         self.dictionary_register = DictionaryRegister()
@@ -49,7 +59,7 @@ class LocalRunnerBuilder(object):
 
 class LocalRunner(object):
     def is_valid(self):
-        if all([hasattr(self, attr) for attr in \
+        if all([hasattr(self, attr) for attr in
                 ['strategy', 'target', 'output']]):
             return True
 
@@ -62,15 +72,12 @@ class LocalRunner(object):
         for data in data_gen:
             current_count += 1
             if not self.target.check_data(data):
-                print("{}% Count:{}, Total:{}".format(100.0 * current_count / total_count,
-                                                      current_count,
-                                                      total_count))
+                print("{}% Count:{}, Total:{}".format(
+                    100.0 * current_count / total_count,
+                    current_count,
+                    total_count))
             else:
-                found = True
-                break
-        if found:
-            self.output.write(data)
-            return True
-        else:
-            print('Not found')
-            return False
+                self.output.write(data)
+                return True
+        print('Nothing found')
+        return False
