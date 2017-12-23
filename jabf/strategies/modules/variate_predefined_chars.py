@@ -1,4 +1,4 @@
-from jabf.search_strategy import SearchStrategy
+from strategies.search_strategy import SearchStrategy
 
 
 class VariatePredefinedCharsStrategy(SearchStrategy):

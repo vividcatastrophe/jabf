@@ -1,9 +1,9 @@
-from jabf.config import config_read
-from jabf.search_strategy import SearchStrategy
-from jabf.target import Target
-from jabf.output_method import OutputMethod
-from jabf.dictionary import DictionaryRegister
-from jabf.class_register import ClassRegister
+from input_parsing.config import config_read
+from input_parsing.dictionary_register import DictionaryRegister
+from strategies.search_strategy import SearchStrategy
+from targets.target import Target
+from output.output_method import OutputMethod
+from utils.class_register import ClassRegister
 
 
 class LocalRunnerBuilder(object):

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from jabf.local_runner import LocalRunnerBuilder
+from runners.local_runner import LocalRunnerBuilder
 import os
 import argparse
 
@@ -14,28 +14,28 @@ parser.add_argument(
     help='path to jabf config file',
     metavar='CONFIG_FILE',
     default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                         'jabf', 'config', 'config.json'))
-parser.add_argument(
-    '-s',
-    '--search-strategies',
-    help='path to folder containing modules with search strategies',
-    metavar='STRATEGIES_FOLDER',
-    default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                         'jabf', 'search_strategy_modules'))
+                         '..', 'config', 'config.json'))
 parser.add_argument(
     '-d',
     '--dictionaries',
     help='path to folder containing dictionaries',
     metavar='DICTIONARIES_FOLDER',
     default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                         'jabf', 'dictionaries'))
+                         '..', 'dictionaries'))
+parser.add_argument(
+    '-s',
+    '--search-strategies',
+    help='path to folder containing modules with search strategies',
+    metavar='STRATEGIES_FOLDER',
+    default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                         'strategies', 'modules'))
 parser.add_argument(
     '-t',
     '--targets',
     help='path to folder containing modules with targets',
     metavar='TARGETS_FOLDER',
     default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                         'jabf', 'target_modules'))
+                         'targets', 'modules'))
 
 parser.add_argument(
     '-o',
@@ -43,7 +43,7 @@ parser.add_argument(
     help='path to folder containing modules with output methods',
     metavar='OUTPUT_METHODS_FOLDER',
     default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                         'jabf', 'output_modules'))
+                         'output', 'modules'))
 
 
 def main():

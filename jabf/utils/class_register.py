@@ -1,7 +1,7 @@
 import glob
 import os
 from inspect import isabstract
-import jabf.utils
+from utils.module_loader import load_module
 
 
 class ClassRegister(object):
@@ -28,7 +28,7 @@ class ClassRegister(object):
         """
         Loads and registers classes found in the module_path file
         """
-        module = jabf.utils.load_module(module_path)
+        module = load_module(module_path)
 
         classes = [getattr(module, cl)
                    for cl in dir(module)

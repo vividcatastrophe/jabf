@@ -1,7 +1,7 @@
 import subprocess
 import shlex
 import os
-from jabf.target import FileContainerTarget
+from targets.target import FileContainerTarget
 
 
 class LuksTarget(FileContainerTarget):

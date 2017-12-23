@@ -1,4 +1,4 @@
-from jabf.output_method import OutputMethod
+from output.output_method import OutputMethod
 
 
 class TerminalPrint(OutputMethod):
